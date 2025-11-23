@@ -261,6 +261,11 @@
         .progress-bar.thumbs-down {
             background: linear-gradient(90deg, #868f96 0%, #596164 100%);
         }
+
+        .qrCode {
+            width: 50%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -273,6 +278,7 @@
         <div class="info-box">
             <h2>How to Connect Clients:</h2>
             <p>1. Open <strong id="clientUrl">http://localhost:3000/client</strong> in another browser tab or device</p>
+            <p><img class="qrCode" src="qr-code.png" alt="QR Code to connect clients"></p>
             <p>2. Enter the connection key:</p>
             <div class="connection-key">allhands2024</div>
             <p style="margin-top: 10px;">3. Click the button to trigger animations here!</p>
