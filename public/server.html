@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .info-box h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .connection-key {
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .animation-area {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pulse-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(3);
+                opacity: 0;
+            }
+        }
+
+        .pulse-circle.animate {
+            animation: pulse 1.2s ease-out;
+        }
+
+        .activity-log {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .activity-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .progress-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .progress-section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .progress-item {
+            margin-bottom: 20px;
+        }
+
+        .progress-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .progress-emoji {
+            font-size: 20px;
+        }
+
+        .progress-count {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .progress-bar.heart {
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .progress-bar.meh {
+            background: linear-gradient(90deg, #ffa751 0%, #ffe259 100%);
+        }
+
+        .progress-bar.thumbs-down {
+            background: linear-gradient(90deg, #868f96 0%, #596164 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖥️ Server Dashboard</h1>
+        <p class="subtitle">
+            <span class="status-indicator"></span>Server is running
+        </p>
+
+        <div class="info-box">
+            <h2>How to Connect Clients:</h2>
+            <p>1. Open <strong id="clientUrl">http://localhost:3000/client</strong> in another browser tab or device</p>
+            <p>2. Enter the connection key:</p>
+            <div class="connection-key">allhands2024</div>
+            <p style="margin-top: 10px;">3. Click the button to trigger animations here!</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <span class="stat-number" id="clientCount">0</span>
+                <div class="stat-label">Connected Clients</div>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" id="buttonClicks">0</span>
+                <div class="stat-label">Button Clicks</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h3>📊 Reaction Statistics</h3>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <div class="progress-label">
+                        <span class="progress-emoji">❤️</span>
+                        <span>Love It</span>
+                    </div>
+                    <span class="progress-count" id="heartCount">0</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar heart" id="heartBar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <div class="progress-label">
+                        <span class="progress-emoji">😑</span>
+                        <span>It's Okay</span>
+                    </div>
+                    <span class="progress-count" id="mehCount">0</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar meh" id="mehBar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div class="progress-header">
+                    <div class="progress-label">
+                        <span class="progress-emoji">👎</span>
+                        <span>Not Great</span>
+                    </div>
+                    <span class="progress-count" id="thumbsDownCount">0</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar thumbs-down" id="thumbsDownBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="animation-area" id="animationArea">
+            <div style="color: #999;">Waiting for client interactions...</div>
+        </div>
+
+        <div class="activity-log" id="activityLog">
+            <div style="color: #999; text-align: center;">Activity log will appear here</div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let clickCount = 0;
+        let heartClicks = 0;
+        let mehClicks = 0;
+        let thumbsDownClicks = 0;
+
+        // Update client URL based on current host
+        document.getElementById('clientUrl').textContent = 
+            `${window.location.protocol}//${window.location.host}/client`;
+
+        // Update client count
+        socket.on('clientCount', (count) => {
+            document.getElementById('clientCount').textContent = count;
+            addActivity(`Client count updated: ${count} connected`);
+        });
+
+        // Handle animation trigger
+        socket.on('triggerAnimation', (data) => {
+            clickCount++;
+            document.getElementById('buttonClicks').textContent = clickCount;
+            
+            // Create and animate pulse circle
+            const circle = document.createElement('div');
+            circle.className = 'pulse-circle animate';
+            
+            // Set emoji and color based on animation type
+            let emoji, color, label;
+            switch(data.animationType) {
+                case 'heart':
+                    emoji = '❤️';
+                    color = '#f5576c';
+                    label = 'Love It';
+                    break;
+                case 'meh':
+                    emoji = '😑';
+                    color = '#ffa751';
+                    label = "It's Okay";
+                    break;
+                case 'thumbs-down':
+                    emoji = '👎';
+                    color = '#596164';
+                    label = 'Not Great';
+                    break;
+                default:
+                    emoji = '🎯';
+                    color = '#667eea';
+                    label = 'Unknown';
+            }
+            
+            circle.textContent = emoji;
+            circle.style.background = color;
+            
+            const animationArea = document.getElementById('animationArea');
+            animationArea.appendChild(circle);
+            
+            // Remove circle after animation
+            setTimeout(() => {
+                circle.remove();
+            }, 1200);
+
+            addActivity(`${emoji} ${label} from client ${data.clientId.substring(0, 8)}...`);
+            
+            // Update progress bars
+            updateProgressBars(data.animationType);
+        });
+
+        function addActivity(message) {
+            const log = document.getElementById('activityLog');
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            const time = new Date().toLocaleTimeString();
+            item.textContent = `[${time}] ${message}`;
+            
+            // Clear placeholder if present
+            if (log.children.length === 1 && log.children[0].style.color === '#999') {
+                log.innerHTML = '';
+            }
+            
+            log.insertBefore(item, log.firstChild);
+            
+            // Keep only last 10 items
+            while (log.children.length > 10) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        function updateProgressBars(animationType) {
+            // Increment the appropriate counter
+            switch(animationType) {
+                case 'heart':
+                    heartClicks++;
+                    break;
+                case 'meh':
+                    mehClicks++;
+                    break;
+                case 'thumbs-down':
+                    thumbsDownClicks++;
+                    break;
+            }
+
+            // Calculate total and percentages
+            const total = heartClicks + mehClicks + thumbsDownClicks;
+            const heartPercent = total > 0 ? (heartClicks / total * 100) : 0;
+            const mehPercent = total > 0 ? (mehClicks / total * 100) : 0;
+            const thumbsDownPercent = total > 0 ? (thumbsDownClicks / total * 100) : 0;
+
+            // Update counts
+            document.getElementById('heartCount').textContent = heartClicks;
+            document.getElementById('mehCount').textContent = mehClicks;
+            document.getElementById('thumbsDownCount').textContent = thumbsDownClicks;
+
+            // Update progress bars
+            document.getElementById('heartBar').style.width = heartPercent + '%';
+            document.getElementById('mehBar').style.width = mehPercent + '%';
+            document.getElementById('thumbsDownBar').style.width = thumbsDownPercent + '%';
+        }
+
+        // Initial connection log
+        socket.on('connect', () => {
+            addActivity('✅ Dashboard connected to server');
+        });
+    </script>
+</body>
+</html>

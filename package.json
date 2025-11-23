@@ -1,0 +1,16 @@
+{
+  "name": "server-client-interaction",
+  "version": "1.0.0",
+  "description": "A web project with a server dashboard and multiple clients that can trigger animations",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["websocket", "socket.io", "interactive"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1"
+  }
+}
