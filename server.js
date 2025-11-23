@@ -8,7 +8,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 const PORT = process.env.PORT || 3000;
-const CONNECTION_KEY = 'allhands2024'; // Simple key for client connections
+const CONNECTION_KEY = 'tobiaslars'; // Simple key for client connections
 
 // Serve static files
 app.use(express.static('public'));
