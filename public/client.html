@@ -212,39 +212,40 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎮 Client Control Panel</h1>
-        <p class="subtitle">Connect to the server to control animations</p>
-
+        <img src="logo.png" alt="Energy-O-Meter Logo" style="display: block; margin: 0 auto 20px auto; width: 200px; height: auto;">
+        
+        
         <div id="connectSection" class="connect-form">
             <div class="input-group">
                 <label for="connectionKey">Connection Key:</label>
-                <input type="text" id="connectionKey" placeholder="Enter connection key" autocomplete="off">
+                <input type="text" id="connectionKey" placeholder="Enter connection key" 
+                       autocomplete="off" 
+                       autocorrect="off" 
+                       autocapitalize="off" 
+                       spellcheck="false">
             </div>
-            <button class="btn" onclick="connect()">Connect to Server</button>
+            <button class="btn" onclick="connect()">Connect</button>
             
             <div class="info-box">
-                <p><strong>How to use:</strong></p>
+                <p><strong>How to use</strong></p>
                 <p>1. Enter the connection key from the server</p>
-                <p>2. Click "Connect to Server"</p>
-                <p>3. Press the action button to trigger animations!</p>
+                <p>2. Click "Connect"</p>
+                <p>3. Press the buttons to trigger a reaction</p>
             </div>
         </div>
 
         <div id="controlSection" class="hidden">
-            <div class="status connected">
-                ✅ Connected to server
-            </div>
 
             <div class="control-panel">
                 <div class="button-grid">
                     <button class="btn action-button heart" onclick="triggerAnimation('heart')">
-                        ❤️ Love It
+                        ❤️ I'm Excited!
                     </button>
                     <button class="btn action-button meh" onclick="triggerAnimation('meh')">
-                        😑 It's Okay
+                        😑 Sure, Whatever!
                     </button>
                     <button class="btn action-button thumbs-down" onclick="triggerAnimation('thumbs-down')">
-                        👎 Not Great
+                        👎 When is this thing over?
                     </button>
                 </div>
             </div>
@@ -298,14 +299,6 @@
                 });
                 clickCount++;
                 document.getElementById('clickCount').textContent = clickCount;
-                
-                // Visual feedback
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '✨ Sent!';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                }, 300);
             }
         }
 

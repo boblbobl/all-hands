@@ -28,6 +28,141 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             max-width: 600px;
             width: 100%;
+            position: relative;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 30px auto;
+            width: 200px;
+            height: auto;
+        }
+
+        .burger-menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .burger-button {
+            background: #667eea;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-button:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .burger-line {
+            width: 24px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-button.open .burger-line:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .burger-button.open .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-button.open .burger-line:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .menu-dropdown {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .menu-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .menu-item:first-child {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .countdown-timer {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .countdown-display {
+            font-size: 72px;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+        }
+
+        .countdown-display.warning {
+            color: #ffa751;
+        }
+
+        .countdown-display.danger {
+            color: #f5576c;
+            animation: pulse-warning 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-warning {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .countdown-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         h1 {
@@ -103,16 +238,14 @@
         }
 
         .animation-area {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 40px;
-            text-align: center;
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
             overflow: hidden;
-            min-height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .pulse-circle {
@@ -120,9 +253,6 @@
             height: 120px;
             border-radius: 50%;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             opacity: 0;
             display: flex;
             align-items: center;
@@ -266,42 +396,155 @@
             width: 50%;
             height: auto;
         }
+
+        .connect-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .connect-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .debug-button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            margin-left: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .debug-button:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-content.wide {
+            max-width: 700px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🖥️ Server Dashboard</h1>
-        <p class="subtitle">
-            <span class="status-indicator"></span>Server is running
-        </p>
-
-        <div class="info-box">
-            <h2>How to Connect Clients:</h2>
-            <p>1. Open <strong id="clientUrl">http://localhost:3000/client</strong> in another browser tab or device</p>
-            <p><img class="qrCode" src="qr-code.png" alt="QR Code to connect clients"></p>
-            <p>2. Enter the connection key:</p>
-            <div class="connection-key">allhands2024</div>
-            <p style="margin-top: 10px;">3. Click the button to trigger animations here!</p>
+        <div class="burger-menu">
+            <button class="burger-button" onclick="toggleMenu()">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </button>
+            <div class="menu-dropdown" id="menuDropdown">
+                <div class="menu-item" onclick="openConnectionModal(); closeMenu();">
+                    How to Connect
+                </div>
+                <div class="menu-item" onclick="openDebugModal(); closeMenu();">
+                    Debug Info
+                </div>
+                <div class="menu-item" onclick="startCountdown(); closeMenu();">
+                    Start Timer (Cmd+S)
+                </div>
+                <div class="menu-item" onclick="resetAll(); closeMenu();">
+                    Reset All (Cmd+C)
+                </div>
+            </div>
         </div>
 
-        <div class="stats">
-            <div class="stat-box">
-                <span class="stat-number" id="clientCount">0</span>
-                <div class="stat-label">Connected Clients</div>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number" id="buttonClicks">0</span>
-                <div class="stat-label">Button Clicks</div>
-            </div>
+        <img src="logo.png" alt="Energy-O-Meter Logo" class="logo">
+
+        <div class="countdown-timer">
+            <div class="countdown-display" id="countdownDisplay">30</div>
+            <div class="countdown-label">Seconds Remaining</div>
         </div>
 
         <div class="progress-section">
-            <h3>📊 Reaction Statistics</h3>
+            <h3>Energy Level</h3>
             <div class="progress-item">
                 <div class="progress-header">
                     <div class="progress-label">
                         <span class="progress-emoji">❤️</span>
-                        <span>Love It</span>
+                        <span>I'm Excited</span>
                     </div>
                     <span class="progress-count" id="heartCount">0</span>
                 </div>
@@ -313,7 +556,7 @@
                 <div class="progress-header">
                     <div class="progress-label">
                         <span class="progress-emoji">😑</span>
-                        <span>It's Okay</span>
+                        <span>Sure, Whatever!</span>
                     </div>
                     <span class="progress-count" id="mehCount">0</span>
                 </div>
@@ -325,7 +568,7 @@
                 <div class="progress-header">
                     <div class="progress-label">
                         <span class="progress-emoji">👎</span>
-                        <span>Not Great</span>
+                        <span>When is this thing over?</span>
                     </div>
                     <span class="progress-count" id="thumbsDownCount">0</span>
                 </div>
@@ -334,13 +577,50 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="animation-area" id="animationArea">
-            <div style="color: #999;">Waiting for client interactions...</div>
+    <!-- Full-screen animation overlay -->
+    <div class="animation-area" id="animationArea"></div>
+
+    <!-- Connection Info Modal -->
+    <div id="connectionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConnectionModal()">&times;</span>
+            <div class="info-box">
+                <h2>How to Connect</h2>
+                <p>1. Open <strong id="clientUrl">http://localhost:3000/client</strong> in another browser tab or device</p>
+                <p><img class="qrCode" src="qr-code.png" alt="QR Code to connect clients"></p>
+                <p>2. Enter the connection key:</p>
+                <div class="connection-key">allhands</div>
+                <p style="margin-top: 10px;">3. Click any button to capture your reaction</p>
+            </div>
         </div>
+    </div>
 
-        <div class="activity-log" id="activityLog">
-            <div style="color: #999; text-align: center;">Activity log will appear here</div>
+    <!-- Debug Info Modal -->
+    <div id="debugModal" class="modal">
+        <div class="modal-content wide">
+            <span class="close" onclick="closeDebugModal()">&times;</span>
+            <h2 style="margin-bottom: 20px; color: #333;">🐛 Debug Information</h2>
+            
+            <p style="color: #666; margin-bottom: 20px;">
+                <span class="status-indicator"></span>Server is running
+            </p>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-number" id="clientCount">0</span>
+                    <div class="stat-label">Connected Clients</div>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" id="buttonClicks">0</span>
+                    <div class="stat-label">Button Clicks</div>
+                </div>
+            </div>
+
+            <div class="activity-log" id="activityLog">
+                <div style="color: #999; text-align: center;">Activity log will appear here</div>
+            </div>
         </div>
     </div>
 
@@ -351,6 +631,8 @@
         let heartClicks = 0;
         let mehClicks = 0;
         let thumbsDownClicks = 0;
+        let countdownInterval = null;
+        let timeRemaining = 30;
 
         // Update client URL based on current host
         document.getElementById('clientUrl').textContent = 
@@ -397,6 +679,12 @@
             
             circle.textContent = emoji;
             circle.style.background = color;
+            
+            // Set random position within the animation area
+            const randomX = Math.random() * 80 + 10; // 10% to 90% to keep within bounds
+            const randomY = Math.random() * 80 + 10; // 10% to 90% to keep within bounds
+            circle.style.left = randomX + '%';
+            circle.style.top = randomY + '%';
             
             const animationArea = document.getElementById('animationArea');
             animationArea.appendChild(circle);
@@ -466,6 +754,139 @@
         // Initial connection log
         socket.on('connect', () => {
             addActivity('✅ Dashboard connected to server');
+        });
+
+        // Countdown timer functions
+        function startCountdown() {
+            // Clear any existing countdown
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            // Reset to 30 seconds
+            timeRemaining = 30;
+            updateCountdownDisplay();
+            
+            // Start countdown
+            countdownInterval = setInterval(() => {
+                timeRemaining--;
+                updateCountdownDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                    addActivity('⏱️ Timer finished!');
+                }
+            }, 1000);
+            
+            addActivity('⏱️ Timer started (30 seconds)');
+        }
+
+        function updateCountdownDisplay() {
+            const display = document.getElementById('countdownDisplay');
+            display.textContent = timeRemaining;
+            
+            // Remove all state classes
+            display.classList.remove('warning', 'danger');
+            
+            // Add appropriate class based on time remaining
+            if (timeRemaining <= 5) {
+                display.classList.add('danger');
+            } else if (timeRemaining <= 10) {
+                display.classList.add('warning');
+            }
+        }
+
+        function resetAll() {
+            // Stop and reset timer
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            timeRemaining = 30;
+            updateCountdownDisplay();
+            
+            // Reset all reaction counts
+            heartClicks = 0;
+            mehClicks = 0;
+            thumbsDownClicks = 0;
+            
+            // Update counts display
+            document.getElementById('heartCount').textContent = 0;
+            document.getElementById('mehCount').textContent = 0;
+            document.getElementById('thumbsDownCount').textContent = 0;
+            
+            // Reset progress bars to 0%
+            document.getElementById('heartBar').style.width = '0%';
+            document.getElementById('mehBar').style.width = '0%';
+            document.getElementById('thumbsDownBar').style.width = '0%';
+            
+            addActivity('🔄 All reactions and timer reset');
+        }
+
+        // Modal functions
+        function openConnectionModal() {
+            document.getElementById('connectionModal').classList.add('show');
+        }
+
+        function closeConnectionModal() {
+            document.getElementById('connectionModal').classList.remove('show');
+        }
+
+        function openDebugModal() {
+            document.getElementById('debugModal').classList.add('show');
+        }
+
+        function closeDebugModal() {
+            document.getElementById('debugModal').classList.remove('show');
+        }
+
+        // Burger menu functions
+        function toggleMenu() {
+            const dropdown = document.getElementById('menuDropdown');
+            const button = document.querySelector('.burger-button');
+            dropdown.classList.toggle('show');
+            button.classList.toggle('open');
+        }
+
+        function closeMenu() {
+            const dropdown = document.getElementById('menuDropdown');
+            const button = document.querySelector('.burger-button');
+            dropdown.classList.remove('show');
+            button.classList.remove('open');
+        }
+
+        // Close modals when clicking outside of them
+        window.onclick = function(event) {
+            const connectionModal = document.getElementById('connectionModal');
+            const debugModal = document.getElementById('debugModal');
+            const menuDropdown = document.getElementById('menuDropdown');
+            const burgerButton = document.querySelector('.burger-button');
+            
+            if (event.target === connectionModal) {
+                closeConnectionModal();
+            } else if (event.target === debugModal) {
+                closeDebugModal();
+            } else if (!burgerButton.contains(event.target) && !menuDropdown.contains(event.target)) {
+                closeMenu();
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Check for Cmd (Mac) or Ctrl (Windows/Linux)
+            const cmdKey = event.metaKey || event.ctrlKey;
+            
+            // Start Timer: Cmd+S
+            if (cmdKey && (event.key === 's' || event.key === 'S')) {
+                event.preventDefault();
+                startCountdown();
+            }
+            // Reset All: Cmd+C
+            else if (cmdKey && (event.key === 'c' || event.key === 'C')) {
+                event.preventDefault();
+                resetAll();
+            }
         });
     </script>
 </body>
